@@ -1,0 +1,169 @@
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local UIS = game:GetService("UserInputService")
+local CoreGui = game:GetService("CoreGui")
+local HttpService = game:GetService("HttpService")
+
+local LocalPlayer = Players.LocalPlayer
+
+local function createUI()
+    if CoreGui:FindFirstChild("WEIR HUB") then
+        CoreGui.WACKShopUI:Destroy()
+    end
+
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Name = "WEIR HUB"
+    ScreenGui.ResetOnSpawn = false
+    pcall(function()
+        syn.protect_gui(ScreenGui) -- สำหรับ Synapse X
+    end)
+    ScreenGui.Parent = CoreGui
+
+    local MainFrame = Instance.new("Frame")
+    MainFrame.Name = "MainFrame"
+    MainFrame.Parent = ScreenGui
+    MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    MainFrame.Size = UDim2.new(0, 350, 0, 450)
+    MainFrame.Position = UDim2.new(0.5, -175, 0.5, -225)
+    MainFrame.BorderSizePixel = 0
+    MainFrame.Visible = true
+    MainFrame.ClipsDescendants = true
+    MainFrame.Active = true
+    MainFrame.Draggable = true
+
+    Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 12)
+    local stroke = Instance.new("UIStroke", MainFrame)
+    stroke.Color = Color3.fromRGB(0, 0, 0)
+    stroke.Thickness = 2
+    stroke.Transparency = 0.4
+
+    local TitleLabel = Instance.new("TextLabel")
+    TitleLabel.Parent = MainFrame
+    TitleLabel.BackgroundTransparency = 1
+    TitleLabel.Size = UDim2.new(1, 0, 0, 50)
+    TitleLabel.Font = Enum.Font.GothamBold
+    TitleLabel.Text = "🔥 WEIR HUB🔥"
+    TitleLabel.TextSize = 22
+    TitleLabel.TextColor3 = Color3.fromRGB(230, 230, 230)
+    TitleLabel.TextStrokeTransparency = 0
+    TitleLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+
+    local FunctionButtonsFrame = Instance.new("ScrollingFrame")
+    FunctionButtonsFrame.Parent = MainFrame
+    FunctionButtonsFrame.BackgroundTransparency = 1
+    FunctionButtonsFrame.Size = UDim2.new(1, -20, 1, -60)
+    FunctionButtonsFrame.Position = UDim2.new(0, 10, 0, 60)
+    FunctionButtonsFrame.ScrollBarThickness = 5
+    FunctionButtonsFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+
+    local functionCategories = {
+        ["🏃 การเคลื่อนที่"] = {
+            ["🚀 บิน V1"] = "https://pastebin.com/raw/vsFeKKDs",
+            ["🔥 วาป"] = "https://pastebin.com/raw/K5FYvtvN",
+            ["🦴 ทะลุกำแพง"] = "https://pastebin.com/raw/7Qab6kg9",
+            ["🏃 วิ่งเร็ว 4 เท่า"] = "https://pastebin.com/raw/pZhkm5mD"
+        },
+        ["⚔️ ตีหัวพ่อมึง"] = {
+            ["⚔️ ฆ่าบอท ทุกตัว"] = "https://pastebin.com/raw/DczvQZyU",
+            ["🎯 ล็อคหี"] = "https://gist.githubusercontent.com/Aimboter477387/582af6aec49782899d5d375ab239039e/raw"
+        },
+        ["🔧 เสกปืนมายิงหัวควย"] = {
+            ["🎁 เสกของ"] = "https://raw.githubusercontent.com/yofriendfromschool1/Sky-Hub-Backup/main/gametoolgiver.lua",
+            ["🔥 บูส FPS"] = "https://raw.githubusercontent.com/XNEOFF/FPS-BOOSTER/main/FPSBooster.txt",
+            ["🎩 Hitbox 32%"] = "https://pastebin.com/raw/iRyTtfmf",
+            ["💪🏻 อมตะ"] = "https://pastebin.com/raw/EjrTrMwC",
+            ["👾 คีย์บอร์ด"] = "https://raw.githubusercontent.com/Xxtan31/Ata/main/deltakeyboardcrack.txt",
+            ["👻 หายตัว"] = "https://pastebin.com/raw/3Rnd9rHf"
+        },
+        ["😈 ชักว่าวใส่สห."] = {
+            ["🌌 หลุมดำ"] = "https://pastebin.com/raw/pkZnU5P5",
+            ["🥴 ชักว่าว"] = "https://pastefy.app/wa3v2Vgm/raw",
+            ["🤧 ดีดกระเด็น"] = "https://pastebin.com/raw/TXMNj1yy",
+            ["🌟 ดึงคน false"] = "https://pastebin.com/raw/CuDBzSm6"
+        },
+        ["🔍 มองหี"] = {
+            ["🔍 ESP Players"] = "https://pastebin.com/raw/ZkLhNuDL",
+            ["🤖 ESP BOT,NPC"] = "https://pastebin.com/raw/q26QuUBF"
+        }
+    }
+
+    local yOffset = 0
+    for category, scripts in pairs(functionCategories) do
+        local label = Instance.new("TextLabel")
+        label.Parent = FunctionButtonsFrame
+        label.BackgroundTransparency = 1
+        label.Size = UDim2.new(1, -20, 0, 25)
+        label.Position = UDim2.new(0, 10, 0, yOffset)
+        label.Font = Enum.Font.GothamBold
+        label.TextSize = 16
+        label.TextColor3 = Color3.fromRGB(180, 180, 50)
+        label.Text = category
+        label.TextXAlignment = Enum.TextXAlignment.Left
+        yOffset += 30
+
+        for name, url in pairs(scripts) do
+            local btn = Instance.new("TextButton")
+            btn.Parent = FunctionButtonsFrame
+            btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+            btn.Size = UDim2.new(1, -20, 0, 35)
+            btn.Position = UDim2.new(0, 10, 0, yOffset)
+            btn.Font = Enum.Font.GothamBold
+            btn.TextSize = 14
+            btn.TextColor3 = Color3.fromRGB(240, 240, 240)
+            btn.Text = name
+            btn.AutoButtonColor = false
+
+            Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
+            local stroke = Instance.new("UIStroke", btn)
+            stroke.Thickness = 1.5
+            stroke.Color = Color3.fromRGB(0, 0, 0)
+            stroke.Transparency = 0.2
+
+            btn.MouseEnter:Connect(function()
+                btn.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+            end)
+            btn.MouseLeave:Connect(function()
+                btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+            end)
+            btn.MouseButton1Click:Connect(function()
+                stroke.Transparency = 0
+                TweenService:Create(stroke, TweenInfo.new(0.3), {Transparency = 0.2}):Play()
+                loadstring(game:HttpGet(url))()
+            end)
+
+            yOffset += 40
+        end
+    end
+    FunctionButtonsFrame.CanvasSize = UDim2.new(0, 0, 0, yOffset)
+
+    local Toggle = Instance.new("TextButton")
+    Toggle.Parent = ScreenGui
+    Toggle.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Toggle.Size = UDim2.new(0, 50, 0, 50)
+    Toggle.Position = UDim2.new(0, 60, 0, 60)
+    Toggle.Font = Enum.Font.GothamBold
+    Toggle.Text = "D"
+    Toggle.TextSize = 20
+    Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Instance.new("UICorner", Toggle).CornerRadius = UDim.new(1, 0)
+    local ToggleStroke = Instance.new("UIStroke", Toggle)
+    ToggleStroke.Color = Color3.fromRGB(0, 0, 0)
+    ToggleStroke.Thickness = 2
+    ToggleStroke.Transparency = 0.3
+
+    local isVisible = true
+    Toggle.MouseButton1Click:Connect(function()
+        isVisible = not isVisible
+        MainFrame.Visible = isVisible
+    end)
+end
+
+createUI()
+
+-- ตรวจสอบซ้ำหากถูกลบ
+while true do
+    wait(1)
+    if not CoreGui:FindFirstChild("WACKShopUI") then
+        createUI()
+    end
+end
